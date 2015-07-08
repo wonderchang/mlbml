@@ -1,0 +1,17 @@
+{
+  "name": "grab-mlb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "exec": "^0.2.0",
+    "moment": "^2.10.3",
+    "phantom": "^0.7.2",
+    "tabletojson": "^0.2.1"
+  }
+}
