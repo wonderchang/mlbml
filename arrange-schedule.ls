@@ -3,20 +3,12 @@ require! <[fs tabletojson]>
 mlb-host = \http://mlb.mlb.com
 src-dir = \src/schedule
 res-dir = \res
-if !fs.exists-sync res-dir then fs.mkdir-sync res-dir
-
 
 output = []; wget = []
-wget.push 'if ! [ -d "src/games" ]'
-wget.push 'then'
-wget.push '\tmkdir src/games'
-wget.push 'fi'
+wget.push 'mkdir -p src/games'
 for date in (fs.readdir-sync src-dir)
   console.log date
-  wget.push 'if ! [ -d "src/games/'+date+'" ]'
-  wget.push 'then'
-  wget.push "\tmkdir src/games/#date"
-  wget.push 'fi'
+  wget.push "mkdir -p src/games/#date"
   obj = date: date, games: []
   d = fs.read-file-sync "#src-dir/#date", \utf-8
   if d is /(<table.*border="0">.*<\/table>)/ then d = that.1

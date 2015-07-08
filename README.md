@@ -2,9 +2,13 @@
 
 Machine learning for predicting MLB
 
+## Module build
+  
+    $ npm i
+
 ## Data bulid
 
-    mkdir res src
-    $ lsc grab-schedule.ls
+    $ lsc make-grab-schedule.ls
+    $ ./grab-schedule.sh
     $ lsc arrange-schedule.ls
     $ ./grab-game.ls

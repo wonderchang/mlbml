@@ -2,3 +2,4 @@ node_modules/
 res/
 src/
 grab-game.sh
+grab-schedule.sh
