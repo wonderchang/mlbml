@@ -2,12 +2,14 @@ require! <[fs tabletojson]>
 
 mlb-host = \http://mlb.mlb.com
 src-dir = \src/games
-res-dir = \res/games
-if !fs.exists-sync res-dir then fs.mkdir-sync res-dir
+game-dir = \res/games
+team-dir = \res/teams
+if !fs.exists-sync game-dir then fs.mkdir-sync game-dir
+if !fs.exists-sync team-dir then fs.mkdir-sync team-dir
 
 for date in (fs.readdir-sync src-dir)
-  if !fs.exists-sync "#res-dir/#date"
-    fs.mkdir-sync "#res-dir/#date"
+  if !fs.exists-sync "#game-dir/#date"
+    fs.mkdir-sync "#game-dir/#date"
   for game in (fs.readdir-sync "#src-dir/#date")
     o = gameinfo: {}, score: {}, record: away: {}, home: {}
     d = fs.read-file-sync "#src-dir/#date/#game", \utf-8
@@ -43,8 +45,15 @@ for date in (fs.readdir-sync src-dir)
       for row in table
         arr = row.0 / ' - '
         o.gameinfo[arr.shift!.replace ' ', ''] = arr * ' - '
-    fs.write-file-sync "#res-dir/#date/#game.json", JSON.stringify o, null, '\t'
-    console.log "#res-dir/#date/#game.json saved."
+    fs.write-file-sync "#game-dir/#date/#game.json", JSON.stringify o, null, '\t'
+    console.log "#game-dir/#date/#game.json saved."
+    [away, home] = game / \-
+    if !fs.exists-sync "#team-dir/#away" then fs.mkdir-sync "#team-dir/#away"
+    fs.write-file-sync "#team-dir/#away/#game.json", JSON.stringify o, null, '\t'
+    console.log "#team-dir/#away/#game.json saved."
+    if !fs.exists-sync "#team-dir/#home" then fs.mkdir-sync "#team-dir/#home"
+    fs.write-file-sync "#team-dir/#home/#game.json", JSON.stringify o, null, '\t'
+    console.log "#team-dir/#home/#game.json saved."
 
 function parse-table table
   act = comment: [], players: []
