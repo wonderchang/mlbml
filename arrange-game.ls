@@ -14,3 +14,12 @@ for date in [(fs.readdir-sync src-dir).0] then
     if d is /<h2 style="margin-top:10px;">(.*?)<\/h2>/
       result = (that.1 / ', ').map -> it = it / ' '; team: it.0, score: parseInt it.1
       o.score.win = result.0; o.score.lose = result.1
+    if d is /(<table class="lineScore mlbBoxScore postEvent">.*?<\/table>)/
+      o.score.detail = tabletojson.convert that.1
+    if d is /<td.*?class="playAlerts"><div class="mTop10"><b>(.*?)<\/div>/
+      arr = (that.1 / '<b>').map -> it / ':<\/b> '
+      o.pitcher = {}; for a in arr then o.pitcher[a.0] = a.1.trim!
+    if d is /<\/div><div class="mTop10"><div class="mTop5"><b>(.*?)<\/div>/
+      o.hr = that.1
+
+
